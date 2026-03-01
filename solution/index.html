@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Showcase</title>
+  <link rel="stylesheet" href="main.css">
+
+  <!-- Flash prevention: apply stored theme BEFORE paint -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('ds-theme');
+        if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        else if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER — sticky navigation with theme toggle
+       ============================================================ -->
+  <header class="showcase-header">
+    <div class="showcase-header__inner">
+      <span class="showcase-header__title">Design System</span>
+      <nav class="showcase-header__nav" aria-label="Component navigation">
+        <a href="#colors" class="showcase-header__link">Colors</a>
+        <a href="#typography" class="showcase-header__link">Typography</a>
+        <a href="#components" class="showcase-header__link">Components</a>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span class="theme-toggle__icon" aria-hidden="true"></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero">
+      <h1 class="hero__title">Modern CSS Design System</h1>
+      <p class="hero__subtitle">
+        Built with CSS custom properties, <code>@layer</code>, container queries,
+        <code>:has()</code>, <code>oklch()</code>, native nesting, and zero dependencies.
+      </p>
+      <div class="hero__badges">
+        <span class="badge badge--primary badge--dot">CSS Only</span>
+        <span class="badge badge--success badge--dot">No Build Step</span>
+        <span class="badge badge--info badge--dot">Dark Mode</span>
+        <span class="badge badge--neutral badge--dot">Modern Browsers</span>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============================================================
+         COLORS
+         ============================================================ -->
+    <section id="colors" class="section">
+      <h2 class="section__title">Color Palette</h2>
+      <p class="section__subtitle">
+        Generated from a single base color using <code>oklch()</code> for perceptual uniformity
+        and <code>color-mix()</code> for programmatic tints and shades.
+      </p>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Primary</h3>
+        <div class="swatch-grid">
+          <div class="swatch" style="background: var(--color-primary-50);"><span>50</span></div>
+          <div class="swatch" style="background: var(--color-primary-100);"><span>100</span></div>
+          <div class="swatch" style="background: var(--color-primary-200);"><span>200</span></div>
+          <div class="swatch" style="background: var(--color-primary-300);"><span>300</span></div>
+          <div class="swatch" style="background: var(--color-primary-400);"><span>400</span></div>
+          <div class="swatch" style="background: var(--color-primary-500);"><span>500</span></div>
+          <div class="swatch" style="background: var(--color-primary-600);"><span>600</span></div>
+          <div class="swatch" style="background: var(--color-primary-700);"><span>700</span></div>
+          <div class="swatch" style="background: var(--color-primary-800);"><span>800</span></div>
+          <div class="swatch" style="background: var(--color-primary-900);"><span>900</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Neutrals</h3>
+        <div class="swatch-grid">
+          <div class="swatch" style="background: var(--color-neutral-0);"><span>0</span></div>
+          <div class="swatch" style="background: var(--color-neutral-50);"><span>50</span></div>
+          <div class="swatch" style="background: var(--color-neutral-100);"><span>100</span></div>
+          <div class="swatch" style="background: var(--color-neutral-200);"><span>200</span></div>
+          <div class="swatch" style="background: var(--color-neutral-300);"><span>300</span></div>
+          <div class="swatch" style="background: var(--color-neutral-400);"><span>400</span></div>
+          <div class="swatch" style="background: var(--color-neutral-500);"><span>500</span></div>
+          <div class="swatch" style="background: var(--color-neutral-600);"><span>600</span></div>
+          <div class="swatch" style="background: var(--color-neutral-700);"><span>700</span></div>
+          <div class="swatch" style="background: var(--color-neutral-800);"><span>800</span></div>
+          <div class="swatch" style="background: var(--color-neutral-900);"><span>900</span></div>
+          <div class="swatch" style="background: var(--color-neutral-950);"><span>950</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Semantic</h3>
+        <div class="swatch-grid" style="grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));">
+          <div class="swatch" style="background: var(--color-success); aspect-ratio: 2/1;"><span>Success</span></div>
+          <div class="swatch" style="background: var(--color-warning); aspect-ratio: 2/1;"><span>Warning</span></div>
+          <div class="swatch" style="background: var(--color-error); aspect-ratio: 2/1;"><span>Error</span></div>
+          <div class="swatch" style="background: var(--color-info); aspect-ratio: 2/1;"><span>Info</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider divider--spacing-sm">
+
+    <!-- ============================================================
+         TYPOGRAPHY
+         ============================================================ -->
+    <section id="typography" class="section">
+      <h2 class="section__title">Typography Scale</h2>
+      <p class="section__subtitle">
+        Fluid type using <code>clamp()</code> -- smoothly scales between viewport sizes with no breakpoints needed.
+      </p>
+
+      <div class="component-demo">
+        <div class="type-sample">
+          <div>
+            <span class="type-label">--text-4xl</span>
+            <span style="font-size: var(--text-4xl); font-weight: var(--weight-bold);">The quick brown fox</span>
+          </div>
+          <div>
+            <span class="type-label">--text-3xl</span>
+            <span style="font-size: var(--text-3xl); font-weight: var(--weight-bold);">The quick brown fox</span>
+          </div>
+          <div>
+            <span class="type-label">--text-2xl</span>
+            <span style="font-size: var(--text-2xl); font-weight: var(--weight-semibold);">The quick brown fox</span>
+          </div>
+          <div>
+            <span class="type-label">--text-xl</span>
+            <span style="font-size: var(--text-xl); font-weight: var(--weight-semibold);">The quick brown fox</span>
+          </div>
+          <div>
+            <span class="type-label">--text-lg</span>
+            <span style="font-size: var(--text-lg); font-weight: var(--weight-medium);">The quick brown fox jumps over the lazy dog</span>
+          </div>
+          <div>
+            <span class="type-label">--text-base</span>
+            <span style="font-size: var(--text-base);">The quick brown fox jumps over the lazy dog</span>
+          </div>
+          <div>
+            <span class="type-label">--text-sm</span>
+            <span style="font-size: var(--text-sm);">The quick brown fox jumps over the lazy dog</span>
+          </div>
+          <div>
+            <span class="type-label">--text-xs</span>
+            <span style="font-size: var(--text-xs);">The quick brown fox jumps over the lazy dog</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Spacing Scale</h3>
+        <div class="component-demo">
+          <div class="spacing-demo">
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-1);"></div>
+              <span class="spacing-block__label">1</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-2);"></div>
+              <span class="spacing-block__label">2</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-3);"></div>
+              <span class="spacing-block__label">3</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-4);"></div>
+              <span class="spacing-block__label">4</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-5);"></div>
+              <span class="spacing-block__label">5</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-6);"></div>
+              <span class="spacing-block__label">6</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-8);"></div>
+              <span class="spacing-block__label">8</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-10);"></div>
+              <span class="spacing-block__label">10</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-12);"></div>
+              <span class="spacing-block__label">12</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-16);"></div>
+              <span class="spacing-block__label">16</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-20);"></div>
+              <span class="spacing-block__label">20</span>
+            </div>
+            <div class="spacing-block">
+              <div class="spacing-block__bar" style="block-size: var(--space-24);"></div>
+              <span class="spacing-block__label">24</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider divider--spacing-sm">
+
+    <!-- ============================================================
+         COMPONENTS
+         ============================================================ -->
+    <section id="components" class="section">
+      <h2 class="section__title">Components</h2>
+      <p class="section__subtitle">
+        Each component demonstrates a modern CSS feature. All styling uses semantic
+        design tokens -- dark mode requires zero changes to component CSS.
+      </p>
+
+      <!-- ==================== BADGES ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Badges</h3>
+        <div class="component-demo">
+          <div class="demo-row">
+            <span class="badge badge--neutral">Neutral</span>
+            <span class="badge badge--primary">Primary</span>
+            <span class="badge badge--success">Success</span>
+            <span class="badge badge--warning">Warning</span>
+            <span class="badge badge--error">Error</span>
+            <span class="badge badge--info">Info</span>
+          </div>
+          <div class="demo-row" style="margin-block-start: var(--space-4);">
+            <span class="badge badge--primary badge--dot">With Dot</span>
+            <span class="badge badge--success badge--dot">Online</span>
+            <span class="badge badge--error badge--dot">Critical</span>
+            <span class="badge badge--primary badge--lg">Large Badge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== BUTTONS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Buttons</h3>
+        <p class="demo-label">Variants</p>
+        <div class="component-demo">
+          <div class="demo-row">
+            <button class="btn">Primary</button>
+            <button class="btn btn--secondary">Secondary</button>
+            <button class="btn btn--outline">Outline</button>
+            <button class="btn btn--ghost">Ghost</button>
+            <button class="btn btn--danger">Danger</button>
+          </div>
+        </div>
+
+        <p class="demo-label" style="margin-block-start: var(--space-4);">Sizes</p>
+        <div class="component-demo">
+          <div class="demo-row">
+            <button class="btn btn--xs">Extra Small</button>
+            <button class="btn btn--sm">Small</button>
+            <button class="btn">Default</button>
+            <button class="btn btn--lg">Large</button>
+            <button class="btn btn--xl">Extra Large</button>
+          </div>
+        </div>
+
+        <p class="demo-label" style="margin-block-start: var(--space-4);">States</p>
+        <div class="component-demo">
+          <div class="demo-row">
+            <button class="btn" disabled>Disabled</button>
+            <button class="btn btn--loading">Loading</button>
+            <button class="btn btn--secondary btn--loading">Loading</button>
+            <button class="btn btn--icon" aria-label="Settings">
+              <span aria-hidden="true">&#9881;</span>
+            </button>
+            <button class="btn btn--ghost btn--icon" aria-label="Close">
+              <span aria-hidden="true">&#10005;</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="demo-label" style="margin-block-start: var(--space-4);">Full width</p>
+        <div class="component-demo" style="max-inline-size: 400px;">
+          <button class="btn btn--full btn--lg">Full Width Button</button>
+        </div>
+      </div>
+
+      <!-- ==================== AVATARS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Avatars</h3>
+        <div class="component-demo">
+          <p class="demo-label">Sizes &amp; status indicators</p>
+          <div class="demo-row">
+            <div class="avatar avatar--xs" data-status="online">XS</div>
+            <div class="avatar avatar--sm" data-status="online">SM</div>
+            <div class="avatar" data-status="online">AB</div>
+            <div class="avatar avatar--lg" data-status="busy">LG</div>
+            <div class="avatar avatar--xl" data-status="away">XL</div>
+          </div>
+          <p class="demo-label" style="margin-block-start: var(--space-4);">Avatar group</p>
+          <div class="avatar-group">
+            <div class="avatar" style="background: var(--color-primary-300); color: var(--color-primary-800);">AB</div>
+            <div class="avatar" style="background: var(--color-success); color: white;">CD</div>
+            <div class="avatar" style="background: var(--color-warning); color: white;">EF</div>
+            <div class="avatar" style="background: var(--color-error); color: white;">GH</div>
+            <div class="avatar" style="background: var(--color-neutral-300); color: var(--color-neutral-700);">+3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ALERTS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Alerts</h3>
+        <div class="demo-grid" style="gap: var(--space-3); max-inline-size: 600px;">
+          <div class="alert alert--info">
+            <span class="alert__icon" aria-hidden="true">&#8505;&#65039;</span>
+            <div class="alert__content">
+              <p class="alert__title">Information</p>
+              <p>This is an informational message with helpful context for the user.</p>
+            </div>
+          </div>
+
+          <div class="alert alert--success">
+            <span class="alert__icon" aria-hidden="true">&#9989;</span>
+            <div class="alert__content">
+              <p class="alert__title">Success</p>
+              <p>Your changes have been saved successfully.</p>
+            </div>
+            <button class="alert__dismiss" aria-label="Dismiss" onclick="this.closest('.alert').remove()">&#10005;</button>
+          </div>
+
+          <div class="alert alert--warning">
+            <span class="alert__icon" aria-hidden="true">&#9888;&#65039;</span>
+            <div class="alert__content">
+              <p class="alert__title">Warning</p>
+              <p>Your session will expire in 5 minutes. Save your work.</p>
+            </div>
+            <button class="alert__dismiss" aria-label="Dismiss" onclick="this.closest('.alert').remove()">&#10005;</button>
+          </div>
+
+          <div class="alert alert--error">
+            <span class="alert__icon" aria-hidden="true">&#10060;</span>
+            <div class="alert__content">
+              <p class="alert__title">Error</p>
+              <p>Unable to connect to the server. Please try again later.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== INPUT FIELDS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Input Fields</h3>
+        <p class="section__subtitle" style="margin-block-end: var(--space-4);">
+          Uses <code>:has()</code> to style the parent based on input state -- no JavaScript needed.
+          Try typing in these fields to see validation states.
+        </p>
+        <div class="component-demo">
+          <div class="form-demo">
+            <div class="field">
+              <label class="field__label" for="demo-name">
+                Full Name <span class="field__required">*</span>
+              </label>
+              <input
+                class="field__input"
+                id="demo-name"
+                type="text"
+                placeholder="Enter your name"
+                required
+                minlength="2"
+              >
+              <span class="field__hint">At least 2 characters</span>
+              <span class="field__error">Name must be at least 2 characters</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="demo-email">
+                Email Address <span class="field__required">*</span>
+              </label>
+              <input
+                class="field__input"
+                id="demo-email"
+                type="email"
+                placeholder="you@example.com"
+                required
+              >
+              <span class="field__hint">We will never share your email</span>
+              <span class="field__error">Please enter a valid email address</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="demo-url">Website</label>
+              <input
+                class="field__input"
+                id="demo-url"
+                type="url"
+                placeholder="https://example.com"
+              >
+              <span class="field__hint">Optional</span>
+              <span class="field__error">Please enter a valid URL</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="demo-message">Message</label>
+              <textarea
+                class="field__input"
+                id="demo-message"
+                placeholder="Type your message..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TOGGLE SWITCH ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Toggle Switch</h3>
+        <div class="component-demo">
+          <div class="demo-grid" style="gap: var(--space-4); max-inline-size: 300px;">
+            <label class="toggle">
+              <input type="checkbox" class="toggle__input" checked>
+              <span>Enable notifications</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" class="toggle__input">
+              <span>Dark mode</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" class="toggle__input" checked>
+              <span>Auto-save drafts</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== CARDS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Cards</h3>
+        <p class="section__subtitle" style="margin-block-end: var(--space-4);">
+          Cards use <strong>container queries</strong> -- they adapt based on their own width, not the viewport.
+          Resize the browser to see cards in the grid switch between vertical and horizontal layouts.
+        </p>
+
+        <p class="demo-label">Cards in a 2-column grid (horizontal layout activates when card is wide enough)</p>
+        <div class="card-demo-grid">
+          <div class="card">
+            <div class="card__inner">
+              <img
+                class="card__media"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='338' fill='%234f46e5'%3E%3Crect width='600' height='338' opacity='.15'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24' fill='%234f46e5' opacity='.5'%3E600 x 338%3C/text%3E%3C/svg%3E"
+                alt="Placeholder image"
+              >
+              <div class="card__body">
+                <span class="card__eyebrow">Tutorial</span>
+                <h4 class="card__title">Container Queries</h4>
+                <p class="card__text">
+                  Components that adapt based on their own container width,
+                  not the viewport. A paradigm shift in responsive design.
+                </p>
+              </div>
+              <div class="card__footer">
+                <button class="btn btn--sm">Read More</button>
+                <button class="btn btn--ghost btn--sm">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__inner">
+              <img
+                class="card__media"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='338' fill='%2316a34a'%3E%3Crect width='600' height='338' opacity='.15'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24' fill='%2316a34a' opacity='.5'%3E600 x 338%3C/text%3E%3C/svg%3E"
+                alt="Placeholder image"
+              >
+              <div class="card__body">
+                <span class="card__eyebrow">Deep Dive</span>
+                <h4 class="card__title">CSS :has() Selector</h4>
+                <p class="card__text">
+                  The parent selector CSS never had before.
+                  Select elements based on their descendants, siblings, or state.
+                </p>
+              </div>
+              <div class="card__footer">
+                <button class="btn btn--sm">Read More</button>
+                <button class="btn btn--ghost btn--sm">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="demo-label" style="margin-block-start: var(--space-6);">Card without image (uses <code>:has()</code> to detect missing media)</p>
+        <div class="card-demo-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+          <div class="card">
+            <div class="card__inner">
+              <div class="card__body">
+                <span class="card__eyebrow">Note</span>
+                <h4 class="card__title">No Image Card</h4>
+                <p class="card__text">
+                  This card has no image. The <code>:has()</code> selector detects
+                  the missing <code>.card__media</code> and adjusts padding.
+                </p>
+              </div>
+              <div class="card__footer">
+                <span class="badge badge--neutral">Design</span>
+                <span class="badge badge--primary">CSS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__inner">
+              <div class="card__body">
+                <span class="card__eyebrow">Tip</span>
+                <h4 class="card__title">Token System</h4>
+                <p class="card__text">
+                  Change <code>--color-primary</code> once and the entire palette updates
+                  automatically via <code>color-mix()</code>.
+                </p>
+              </div>
+              <div class="card__footer">
+                <span class="badge badge--success">Tokens</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__inner">
+              <div class="card__body">
+                <span class="card__eyebrow">Concept</span>
+                <h4 class="card__title">Cascade Layers</h4>
+                <p class="card__text">
+                  <code>@layer</code> eliminates specificity wars.
+                  Utilities always beat components, regardless of selector weight.
+                </p>
+              </div>
+              <div class="card__footer">
+                <span class="badge badge--info">Architecture</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="demo-label" style="margin-block-start: var(--space-6);">Full-width card (container query switches to horizontal layout)</p>
+        <div class="card-demo-full">
+          <div class="card">
+            <div class="card__inner">
+              <img
+                class="card__media"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' fill='%23e11d48'%3E%3Crect width='600' height='400' opacity='.12'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='system-ui' font-size='24' fill='%23e11d48' opacity='.5'%3EFeatured%3C/text%3E%3C/svg%3E"
+                alt="Placeholder for featured content"
+              >
+              <div class="card__body">
+                <span class="card__eyebrow">Featured</span>
+                <h4 class="card__title">This Card Is Wide Enough for Horizontal Layout</h4>
+                <p class="card__text">
+                  Because this card sits in a full-width container, the container query
+                  at 420px triggers and switches to a side-by-side layout. The same card
+                  markup above renders vertically in narrower containers.
+                </p>
+              </div>
+              <div class="card__footer">
+                <button class="btn btn--sm">Explore</button>
+                <button class="btn btn--outline btn--sm">Bookmark</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SKELETON LOADER ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Skeleton Loader</h3>
+        <p class="section__subtitle" style="margin-block-end: var(--space-4);">
+          Perceived performance: show the shape of content before it loads.
+        </p>
+        <div class="component-demo">
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4);">
+            <!-- Skeleton card 1 -->
+            <div class="skeleton-card">
+              <div class="skeleton skeleton--image"></div>
+              <div class="skeleton-card__body">
+                <div class="skeleton skeleton--text-short"></div>
+                <div class="skeleton skeleton--heading"></div>
+                <div class="skeleton skeleton--text"></div>
+                <div class="skeleton skeleton--text"></div>
+                <div class="skeleton skeleton--text-short"></div>
+                <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-2);">
+                  <div class="skeleton skeleton--button"></div>
+                  <div class="skeleton skeleton--button"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Skeleton card 2 -->
+            <div class="skeleton-card">
+              <div class="skeleton skeleton--image"></div>
+              <div class="skeleton-card__body">
+                <div class="skeleton skeleton--text-short"></div>
+                <div class="skeleton skeleton--heading"></div>
+                <div class="skeleton skeleton--text"></div>
+                <div class="skeleton skeleton--text"></div>
+                <div class="skeleton skeleton--text-short"></div>
+                <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-2);">
+                  <div class="skeleton skeleton--button"></div>
+                  <div class="skeleton skeleton--button"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Skeleton user row -->
+            <div class="skeleton-card">
+              <div class="skeleton-card__body">
+                <div style="display: flex; align-items: center; gap: var(--space-3);">
+                  <div class="skeleton skeleton--avatar"></div>
+                  <div style="flex: 1; display: grid; gap: var(--space-2);">
+                    <div class="skeleton skeleton--text-short"></div>
+                    <div class="skeleton skeleton--text" style="inline-size: 80%;"></div>
+                  </div>
+                </div>
+                <div class="skeleton skeleton--text" style="margin-block-start: var(--space-3);"></div>
+                <div class="skeleton skeleton--text"></div>
+                <div class="skeleton skeleton--text-short"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PROGRESS BAR ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Progress Bar</h3>
+        <div class="component-demo" style="max-inline-size: 500px;">
+          <div class="demo-grid" style="gap: var(--space-6);">
+            <div>
+              <p class="demo-label">Default (65%)</p>
+              <div class="progress" style="--progress-value: 65%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+            <div>
+              <p class="demo-label">Success (100%)</p>
+              <div class="progress progress--success" style="--progress-value: 100%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+            <div>
+              <p class="demo-label">Warning (45%)</p>
+              <div class="progress progress--warning" style="--progress-value: 45%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+            <div>
+              <p class="demo-label">Error (20%) -- Small</p>
+              <div class="progress progress--error progress--sm" style="--progress-value: 20%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+            <div>
+              <p class="demo-label">Large (80%)</p>
+              <div class="progress progress--lg" style="--progress-value: 80%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+            <div>
+              <p class="demo-label">Indeterminate</p>
+              <div class="progress progress--indeterminate">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TOOLTIP ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Tooltips</h3>
+        <div class="component-demo">
+          <div class="demo-row">
+            <div class="tooltip-wrapper">
+              <button class="btn btn--secondary">Hover me</button>
+              <span class="tooltip">This is a tooltip</span>
+            </div>
+            <div class="tooltip-wrapper">
+              <button class="btn btn--outline">More info</button>
+              <span class="tooltip">Additional context on hover or focus</span>
+            </div>
+            <div class="tooltip-wrapper">
+              <button class="btn btn--ghost btn--icon" aria-label="Help">
+                <span aria-hidden="true">?</span>
+              </button>
+              <span class="tooltip">Need help?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== TOGGLE SWITCHES (repeated in context) ==================== -->
+
+      <!-- ==================== DIVIDERS ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Dividers</h3>
+        <div class="component-demo">
+          <p class="demo-label">Default</p>
+          <hr class="divider divider--spacing-sm">
+          <p class="demo-label">Subtle</p>
+          <hr class="divider divider--subtle divider--spacing-sm">
+          <p class="demo-label">Strong</p>
+          <hr class="divider divider--strong divider--spacing-sm">
+        </div>
+      </div>
+
+      <!-- ==================== DIALOG / MODAL ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Dialog / Modal</h3>
+        <p class="section__subtitle" style="margin-block-end: var(--space-4);">
+          Uses the native <code>&lt;dialog&gt;</code> element. Focus trapping, backdrop,
+          and <kbd>Escape</kbd> to close are built in -- no JavaScript library needed.
+        </p>
+        <div class="component-demo">
+          <div class="demo-row">
+            <button class="btn" onclick="document.getElementById('demo-dialog').showModal()">
+              Open Dialog
+            </button>
+            <button class="btn btn--secondary" onclick="document.getElementById('demo-dialog-form').showModal()">
+              Open Form Dialog
+            </button>
+          </div>
+        </div>
+
+        <!-- Dialog 1: Confirmation -->
+        <dialog id="demo-dialog" class="dialog">
+          <div class="dialog__header">
+            <h2 class="dialog__title">Confirm Deletion</h2>
+            <button
+              class="dialog__close"
+              aria-label="Close dialog"
+              onclick="this.closest('dialog').close()"
+            >&times;</button>
+          </div>
+          <div class="dialog__body">
+            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+          </div>
+          <div class="dialog__footer">
+            <button class="btn btn--secondary" onclick="this.closest('dialog').close()">Cancel</button>
+            <button class="btn btn--danger" onclick="this.closest('dialog').close()">Delete</button>
+          </div>
+        </dialog>
+
+        <!-- Dialog 2: Form -->
+        <dialog id="demo-dialog-form" class="dialog">
+          <div class="dialog__header">
+            <h2 class="dialog__title">Create New Project</h2>
+            <button
+              class="dialog__close"
+              aria-label="Close dialog"
+              onclick="this.closest('dialog').close()"
+            >&times;</button>
+          </div>
+          <div class="dialog__body">
+            <div class="form-demo" style="max-inline-size: 100%;">
+              <div class="field">
+                <label class="field__label" for="dialog-project-name">
+                  Project Name <span class="field__required">*</span>
+                </label>
+                <input
+                  class="field__input"
+                  id="dialog-project-name"
+                  type="text"
+                  placeholder="My awesome project"
+                  required
+                  minlength="3"
+                >
+                <span class="field__error">Name must be at least 3 characters</span>
+              </div>
+              <div class="field">
+                <label class="field__label" for="dialog-project-desc">Description</label>
+                <textarea
+                  class="field__input"
+                  id="dialog-project-desc"
+                  placeholder="What is this project about?"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="dialog__footer">
+            <button class="btn btn--secondary" onclick="this.closest('dialog').close()">Cancel</button>
+            <button class="btn" onclick="this.closest('dialog').close()">Create Project</button>
+          </div>
+        </dialog>
+      </div>
+
+      <!-- ==================== COMPOSITION EXAMPLE ==================== -->
+      <div class="subsection">
+        <h3 class="subsection__title">Composition Example</h3>
+        <p class="section__subtitle" style="margin-block-end: var(--space-4);">
+          Combining multiple components together in a realistic layout.
+        </p>
+        <div class="component-demo" style="max-inline-size: 500px;">
+          <div style="display: grid; gap: var(--space-6);">
+            <!-- User card -->
+            <div style="display: flex; align-items: center; gap: var(--space-3);">
+              <div class="avatar avatar--lg" data-status="online" style="background: var(--color-primary-300); color: var(--color-primary-800);">JD</div>
+              <div>
+                <div style="font-weight: var(--weight-semibold);">Jane Doe</div>
+                <div style="font-size: var(--text-sm); color: var(--text-secondary);">Senior Engineer</div>
+              </div>
+              <span class="badge badge--success badge--dot" style="margin-inline-start: auto;">Active</span>
+            </div>
+
+            <hr class="divider divider--spacing-sm" style="margin-block: 0;">
+
+            <!-- Progress section -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-block-end: var(--space-2);">
+                <span style="font-size: var(--text-sm); font-weight: var(--weight-medium);">Project completion</span>
+                <span class="badge badge--primary">72%</span>
+              </div>
+              <div class="progress" style="--progress-value: 72%;">
+                <div class="progress__fill"></div>
+              </div>
+            </div>
+
+            <!-- Alert -->
+            <div class="alert alert--info" style="margin: 0;">
+              <span class="alert__icon" aria-hidden="true">&#8505;&#65039;</span>
+              <div class="alert__content">
+                <p>Next milestone due in 3 days. <a href="#" style="text-decoration: underline; color: var(--color-info);">View timeline</a></p>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="demo-row">
+              <button class="btn btn--sm">View Profile</button>
+              <button class="btn btn--outline btn--sm">Send Message</button>
+
+              <div class="tooltip-wrapper" style="margin-inline-start: auto;">
+                <button class="btn btn--ghost btn--icon btn--sm" aria-label="More options">
+                  <span aria-hidden="true">&#8942;</span>
+                </button>
+                <span class="tooltip">More options</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <hr class="divider">
+
+    <!-- ============================================================
+         DARK MODE INFO
+         ============================================================ -->
+    <section class="section">
+      <h2 class="section__title">Dark Mode</h2>
+      <p class="section__subtitle">
+        Click the theme toggle in the header to cycle through
+        <strong>System</strong>, <strong>Light</strong>, and <strong>Dark</strong> modes.
+        Dark mode works by swapping semantic tokens -- zero changes to component CSS.
+        Your preference is saved to <code>localStorage</code>.
+      </p>
+      <div class="component-demo" style="max-inline-size: 500px;">
+        <div class="demo-grid" style="gap: var(--space-4);">
+          <div style="display: flex; gap: var(--space-3); align-items: center;">
+            <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-page); border: var(--border-thin) solid var(--border-default);"></div>
+            <div>
+              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-page</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Page background</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: center;">
+            <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-raised); border: var(--border-thin) solid var(--border-default);"></div>
+            <div>
+              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-raised</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Card/panel background</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: center;">
+            <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-sunken); border: var(--border-thin) solid var(--border-default);"></div>
+            <div>
+              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-sunken</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Recessed areas</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: var(--space-3); align-items: center;">
+            <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--text-primary);"></div>
+            <div>
+              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--text-primary</div>
+              <div style="font-size: var(--text-xs); color: var(--text-muted);">Main text color</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="showcase-footer">
+    <p>
+      Built with modern CSS -- no Sass, no CSS-in-JS, no build step.
+    </p>
+    <p style="margin-block-start: var(--space-2);">
+      <span class="badge badge--neutral">@layer</span>
+      <span class="badge badge--neutral">oklch()</span>
+      <span class="badge badge--neutral">:has()</span>
+      <span class="badge badge--neutral">Container Queries</span>
+      <span class="badge badge--neutral">@property</span>
+      <span class="badge badge--neutral">CSS Nesting</span>
+    </p>
+  </footer>
+
+  <!-- Theme toggle script -->
+  <script src="theme.js"></script>
+
+</body>
+</html>

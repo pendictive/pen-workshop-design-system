@@ -1,0 +1,175 @@
+/* ============================================================
+   MODERN CSS RESET
+   Sensible defaults that remove browser inconsistencies
+   while preserving useful defaults where appropriate.
+   ============================================================ */
+
+@layer reset {
+  /*
+   * Universal box-sizing: border-box means padding and border
+   * are included in an element's total width/height.
+   * This is the single most important reset rule.
+   */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /*
+   * Root element setup:
+   * - color-scheme: tells the browser this page supports both themes
+   *   (affects form controls, scrollbars, etc.)
+   * - hanging-punctuation: moves quotes/periods outside the text box
+   *   for cleaner visual alignment (progressive enhancement)
+   * - text-size-adjust: prevents mobile browsers from inflating font sizes
+   * - smooth scrolling, but only if the user has not requested reduced motion
+   */
+  html {
+    color-scheme: light dark;
+    hanging-punctuation: first last;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /*
+   * Body defaults:
+   * - min-block-size: 100dvh uses dynamic viewport height, which accounts
+   *   for mobile browser chrome (URL bar, bottom bar) unlike plain vh
+   * - Logical property: block-size = height in horizontal writing modes
+   * - -webkit-font-smoothing: antialiased makes text rendering crisper on macOS
+   */
+  body {
+    min-block-size: 100dvh;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    background-color: var(--surface-page);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /*
+   * Media defaults:
+   * - block display prevents inline spacing issues
+   * - max-inline-size: 100% prevents overflow (inline-size = width)
+   * - height: auto maintains aspect ratio
+   */
+  img, picture, video, canvas, svg {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  /*
+   * Form element reset:
+   * By default, inputs/buttons/textareas/selects do NOT inherit
+   * font properties from their parent. This fixes that.
+   */
+  input, button, textarea, select {
+    font: inherit;
+    color: inherit;
+  }
+
+  /*
+   * Text wrapping:
+   * - break-word prevents long strings from overflowing containers
+   * - text-wrap: balance distributes text evenly across lines in headings
+   * - text-wrap: pretty avoids orphans (single words on the last line)
+   */
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+    line-height: var(--leading-tight);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * Link reset: inherit color and remove underline by default.
+   * Components will add their own link styling.
+   */
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  /*
+   * List reset: remove default list styling.
+   * Only applies to lists with a role attribute (nav lists, etc.)
+   * to preserve default styling for content lists.
+   */
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+  }
+
+  /*
+   * Table reset
+   */
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  /*
+   * Remove default button styling
+   */
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /*
+   * Textarea: only allow vertical resizing to prevent layout breakage
+   */
+  textarea {
+    resize: vertical;
+  }
+
+  /*
+   * Dialog reset: remove default border
+   */
+  dialog {
+    border: none;
+    padding: 0;
+  }
+
+  /*
+   * Focus visible: show focus ring only for keyboard navigation,
+   * not for mouse clicks. This is the modern approach.
+   */
+  :focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /*
+   * Selection styling
+   */
+  ::selection {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-900);
+  }
+}

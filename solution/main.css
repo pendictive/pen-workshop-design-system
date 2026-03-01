@@ -1,0 +1,22 @@
+/* ============================================================
+   MAIN.CSS -- Layer ordering & imports
+
+   This single line controls the entire cascade priority.
+   Layers listed later have HIGHER priority:
+
+   tokens   (lowest)  -- raw design values
+   reset               -- browser defaults normalization
+   base                -- base element styles
+   components          -- all component styles
+   utilities (highest) -- one-off overrides, always win
+
+   CRITICAL: Styles NOT inside any @layer beat ALL layered
+   styles. Never write styles outside a layer in this system.
+   ============================================================ */
+
+@layer tokens, reset, base, components, utilities;
+
+@import url("tokens.css");
+@import url("reset.css");
+@import url("components.css");
+@import url("utilities.css");
