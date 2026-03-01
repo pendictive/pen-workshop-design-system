@@ -19,6 +19,8 @@
 </head>
 <body>
 
+  <a href="#main-content" class="visually-hidden" style="position:absolute;top:-100%;left:0;padding:0.75rem 1.5rem;background:var(--color-primary);color:var(--text-inverse);z-index:1000;text-decoration:none;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
+
   <!-- ============================================================
        HEADER — sticky navigation with theme toggle
        ============================================================ -->
@@ -29,6 +31,7 @@
         <a href="#colors" class="showcase-header__link">Colors</a>
         <a href="#typography" class="showcase-header__link">Typography</a>
         <a href="#components" class="showcase-header__link">Components</a>
+        <a href="#dark-mode" class="showcase-header__link">Dark Mode</a>
         <button
           id="theme-toggle"
           class="theme-toggle"
@@ -41,7 +44,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
 
     <!-- ============================================================
          HERO
@@ -372,7 +375,7 @@
           Try typing in these fields to see validation states.
         </p>
         <div class="component-demo">
-          <div class="form-demo">
+          <form class="form-demo" onsubmit="event.preventDefault()">
             <div class="field">
               <label class="field__label" for="demo-name">
                 Full Name <span class="field__required">*</span>
@@ -405,14 +408,17 @@
             </div>
 
             <div class="field">
-              <label class="field__label" for="demo-url">Website</label>
+              <label class="field__label" for="demo-url">
+                Website <span class="field__required">*</span>
+              </label>
               <input
                 class="field__input"
                 id="demo-url"
                 type="url"
                 placeholder="https://example.com"
+                required
               >
-              <span class="field__hint">Optional</span>
+              <span class="field__hint">Enter a full URL including https://</span>
               <span class="field__error">Please enter a valid URL</span>
             </div>
 
@@ -425,7 +431,7 @@
                 rows="3"
               ></textarea>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -506,7 +512,7 @@
         </div>
 
         <p class="demo-label" style="margin-block-start: var(--space-6);">Card without image (uses <code>:has()</code> to detect missing media)</p>
-        <div class="card-demo-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+        <div class="card-demo-grid card-demo-grid--three" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
           <div class="card">
             <div class="card__inner">
               <div class="card__body">
@@ -591,7 +597,7 @@
           Perceived performance: show the shape of content before it loads.
         </p>
         <div class="component-demo">
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4);">
+          <div class="card-demo-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
             <!-- Skeleton card 1 -->
             <div class="skeleton-card">
               <div class="skeleton skeleton--image"></div>
@@ -601,7 +607,7 @@
                 <div class="skeleton skeleton--text"></div>
                 <div class="skeleton skeleton--text"></div>
                 <div class="skeleton skeleton--text-short"></div>
-                <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-2);">
+                <div class="demo-row" style="margin-block-start: var(--space-2);">
                   <div class="skeleton skeleton--button"></div>
                   <div class="skeleton skeleton--button"></div>
                 </div>
@@ -616,7 +622,7 @@
                 <div class="skeleton skeleton--text"></div>
                 <div class="skeleton skeleton--text"></div>
                 <div class="skeleton skeleton--text-short"></div>
-                <div style="display: flex; gap: var(--space-2); margin-block-start: var(--space-2);">
+                <div class="demo-row" style="margin-block-start: var(--space-2);">
                   <div class="skeleton skeleton--button"></div>
                   <div class="skeleton skeleton--button"></div>
                 </div>
@@ -625,7 +631,7 @@
             <!-- Skeleton user row -->
             <div class="skeleton-card">
               <div class="skeleton-card__body">
-                <div style="display: flex; align-items: center; gap: var(--space-3);">
+                <div class="demo-row">
                   <div class="skeleton skeleton--avatar"></div>
                   <div style="flex: 1; display: grid; gap: var(--space-2);">
                     <div class="skeleton skeleton--text-short"></div>
@@ -692,18 +698,18 @@
         <div class="component-demo">
           <div class="demo-row">
             <div class="tooltip-wrapper">
-              <button class="btn btn--secondary">Hover me</button>
-              <span class="tooltip">This is a tooltip</span>
+              <button class="btn btn--secondary" aria-describedby="tooltip-1">Hover me</button>
+              <span class="tooltip" role="tooltip" id="tooltip-1">This is a tooltip</span>
             </div>
             <div class="tooltip-wrapper">
-              <button class="btn btn--outline">More info</button>
-              <span class="tooltip">Additional context on hover or focus</span>
+              <button class="btn btn--outline" aria-describedby="tooltip-2">More info</button>
+              <span class="tooltip" role="tooltip" id="tooltip-2">Additional context on hover or focus</span>
             </div>
             <div class="tooltip-wrapper">
-              <button class="btn btn--ghost btn--icon" aria-label="Help">
+              <button class="btn btn--ghost btn--icon" aria-label="Help" aria-describedby="tooltip-3">
                 <span aria-hidden="true">?</span>
               </button>
-              <span class="tooltip">Need help?</span>
+              <span class="tooltip" role="tooltip" id="tooltip-3">Need help?</span>
             </div>
           </div>
         </div>
@@ -812,9 +818,9 @@
           Combining multiple components together in a realistic layout.
         </p>
         <div class="component-demo" style="max-inline-size: 500px;">
-          <div style="display: grid; gap: var(--space-6);">
+          <div class="demo-grid" style="gap: var(--space-6);">
             <!-- User card -->
-            <div style="display: flex; align-items: center; gap: var(--space-3);">
+            <div class="demo-row">
               <div class="avatar avatar--lg" data-status="online" style="background: var(--color-primary-300); color: var(--color-primary-800);">JD</div>
               <div>
                 <div style="font-weight: var(--weight-semibold);">Jane Doe</div>
@@ -827,7 +833,7 @@
 
             <!-- Progress section -->
             <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-block-end: var(--space-2);">
+              <div class="demo-row" style="justify-content: space-between; margin-block-end: var(--space-2);">
                 <span style="font-size: var(--text-sm); font-weight: var(--weight-medium);">Project completion</span>
                 <span class="badge badge--primary">72%</span>
               </div>
@@ -850,10 +856,10 @@
               <button class="btn btn--outline btn--sm">Send Message</button>
 
               <div class="tooltip-wrapper" style="margin-inline-start: auto;">
-                <button class="btn btn--ghost btn--icon btn--sm" aria-label="More options">
+                <button class="btn btn--ghost btn--icon btn--sm" aria-label="More options" aria-describedby="tooltip-4">
                   <span aria-hidden="true">&#8942;</span>
                 </button>
-                <span class="tooltip">More options</span>
+                <span class="tooltip" role="tooltip" id="tooltip-4">More options</span>
               </div>
             </div>
           </div>
@@ -867,7 +873,7 @@
     <!-- ============================================================
          DARK MODE INFO
          ============================================================ -->
-    <section class="section">
+    <section id="dark-mode" class="section">
       <h2 class="section__title">Dark Mode</h2>
       <p class="section__subtitle">
         Click the theme toggle in the header to cycle through
@@ -877,32 +883,32 @@
       </p>
       <div class="component-demo" style="max-inline-size: 500px;">
         <div class="demo-grid" style="gap: var(--space-4);">
-          <div style="display: flex; gap: var(--space-3); align-items: center;">
+          <div class="demo-row" style="gap: var(--space-3);">
             <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-page); border: var(--border-thin) solid var(--border-default);"></div>
             <div>
-              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-page</div>
-              <div style="font-size: var(--text-xs); color: var(--text-muted);">Page background</div>
+              <div class="font-medium text-sm">--surface-page</div>
+              <div class="text-xs text-muted">Page background</div>
             </div>
           </div>
-          <div style="display: flex; gap: var(--space-3); align-items: center;">
+          <div class="demo-row" style="gap: var(--space-3);">
             <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-raised); border: var(--border-thin) solid var(--border-default);"></div>
             <div>
-              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-raised</div>
-              <div style="font-size: var(--text-xs); color: var(--text-muted);">Card/panel background</div>
+              <div class="font-medium text-sm">--surface-raised</div>
+              <div class="text-xs text-muted">Card/panel background</div>
             </div>
           </div>
-          <div style="display: flex; gap: var(--space-3); align-items: center;">
+          <div class="demo-row" style="gap: var(--space-3);">
             <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--surface-sunken); border: var(--border-thin) solid var(--border-default);"></div>
             <div>
-              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--surface-sunken</div>
-              <div style="font-size: var(--text-xs); color: var(--text-muted);">Recessed areas</div>
+              <div class="font-medium text-sm">--surface-sunken</div>
+              <div class="text-xs text-muted">Recessed areas</div>
             </div>
           </div>
-          <div style="display: flex; gap: var(--space-3); align-items: center;">
+          <div class="demo-row" style="gap: var(--space-3);">
             <div style="inline-size: 3rem; block-size: 3rem; border-radius: var(--radius-lg); background: var(--text-primary);"></div>
             <div>
-              <div style="font-size: var(--text-sm); font-weight: var(--weight-medium);">--text-primary</div>
-              <div style="font-size: var(--text-xs); color: var(--text-muted);">Main text color</div>
+              <div class="font-medium text-sm">--text-primary</div>
+              <div class="text-xs text-muted">Main text color</div>
             </div>
           </div>
         </div>

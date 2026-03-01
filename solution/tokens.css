@@ -85,7 +85,6 @@
 
     --border-default: var(--color-neutral-200);
     --border-strong:  var(--color-neutral-400);
-    --border-focus:   var(--color-primary);
 
     /* ==========================================================
        TYPOGRAPHY
@@ -119,6 +118,7 @@
     --tracking-normal: 0em;
     --tracking-wide:   0.025em;
     --tracking-wider:  0.05em;
+    /* Additional tokens available for extension: --leading-none, --leading-loose, --tracking-normal */
 
     /* ==========================================================
        SPACING -- consistent 4px-based scale
@@ -166,6 +166,7 @@
     --shadow-xl:  0 20px 25px oklch(0% 0 0 / 10%), 0 8px 10px oklch(0% 0 0 / 5%);
     --shadow-2xl: 0 25px 50px oklch(0% 0 0 / 18%);
     --shadow-inner: inset 0 2px 4px oklch(0% 0 0 / 5%);
+    /* Additional tokens available for extension: --shadow-inner */
 
     /* ==========================================================
        Z-INDEX SCALE
@@ -192,7 +193,7 @@
     --ease-default: cubic-bezier(0.4, 0, 0.2, 1);   /* general purpose  */
     --ease-in:      cubic-bezier(0.4, 0, 1, 1);      /* exits            */
     --ease-out:     cubic-bezier(0, 0, 0.2, 1);      /* entrances        */
-    --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);    /* state changes    */
+    --ease-in-out:  cubic-bezier(0.45, 0, 0.55, 1);   /* state changes    */
     --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1); /* playful spring */
 
     /* ==========================================================
@@ -205,6 +206,9 @@
 
     /* ==========================================================
        BREAKPOINTS (reference values for page-level layouts)
+       NOTE: CSS custom properties cannot be used inside @media
+       conditions. These serve as documentation/reference values
+       only. Use the raw values (e.g., 768px) in media queries.
        ========================================================== */
     --bp-sm:  640px;
     --bp-md:  768px;

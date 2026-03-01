@@ -102,6 +102,17 @@
       storeTheme(nextTheme);
       updateToggleButton(toggleButton, nextTheme);
     });
+
+    // Listen for OS theme changes so the button label updates
+    // when in "system" mode and the user changes their OS theme.
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", function () {
+        const current = getStoredTheme();
+        if (current === "system") {
+          updateToggleButton(toggleButton, "system");
+        }
+      });
   }
 
   // Run on DOM ready

@@ -45,7 +45,6 @@ Build a production-quality, visually polished component library using only moder
 - `@property` for typed, animatable custom properties
 - Container queries for self-adapting components
 - `:has()` for parent-aware styling (no JavaScript needed)
-- `@scope` for style encapsulation (advanced)
 - `@starting-style` for entry animations
 - `prefers-reduced-motion` and `prefers-color-scheme`
 - Logical properties for internationalization-ready CSS
@@ -83,13 +82,12 @@ Before writing any styles, you need to understand cascade layers thoroughly.
 
 ```css
 /* main.css -- this single line controls the entire cascade */
-@layer tokens, reset, base, components, utilities;
+@layer tokens, reset, components, utilities;
 ```
 
 This means:
 - `utilities` beats `components` (always)
-- `components` beats `base` (always)
-- `base` beats `reset` (always)
+- `components` beats `reset` (always)
 - `reset` beats `tokens` (always)
 
 **Critical gotcha:** Styles NOT inside any `@layer` beat ALL layered styles. Never write styles outside a layer in a system that uses layers.
@@ -114,7 +112,7 @@ Now create the `main.css` file:
 
 ```css
 /* main.css -- Layer ordering & imports */
-@layer tokens, reset, base, components, utilities;
+@layer tokens, reset, components, utilities;
 
 @import url("tokens.css");
 @import url("reset.css");
@@ -122,13 +120,15 @@ Now create the `main.css` file:
 @import url("utilities.css");
 ```
 
+**Note:** CSS `@import` creates sequential network requests. In production, you would concatenate these files using a build tool. For our workshop, the separate files make the architecture clearer.
+
 ### 1b. Design Tokens
 
 Tokens are the atoms of the system. Every visual decision (color, spacing, font size, shadow, animation timing) is captured as a CSS custom property.
 
 **`oklch()` color space:** Unlike `hsl()`, oklch is perceptually uniform -- a lightness of 50% actually looks medium-bright across all hues. This means programmatically generated tints and shades look correct.
 
-**`color-mix()` function:** Generates a full palette from a single base color by mixing it with white (for tints) or black (for shades).
+**`color-mix()` function:** Generates a full palette from a single base color by mixing it with white (for tints) or black (for shades). In `color-mix(in oklch, var(--color-primary) 8%, white)`, the percentage applies to the FIRST color. This means 8% primary + 92% white -- producing a very light tint. Think of it as: "how much of the first color do I want?"
 
 Create `tokens.css`:
 
@@ -211,7 +211,6 @@ Semantic color aliases (these are what dark mode swaps):
 
     --border-default: var(--color-neutral-200);
     --border-strong:  var(--color-neutral-400);
-    --border-focus:   var(--color-primary);
 ```
 
 Fluid typography using `clamp()`:
@@ -243,7 +242,7 @@ Transition tokens with reduced motion:
     --ease-default: cubic-bezier(0.4, 0, 0.2, 1);    /* general purpose  */
     --ease-in:      cubic-bezier(0.4, 0, 1, 1);       /* exits            */
     --ease-out:     cubic-bezier(0, 0, 0.2, 1);       /* entrances        */
-    --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);     /* state changes    */
+    --ease-in-out:  cubic-bezier(0.45, 0, 0.55, 1);    /* state changes    */
     --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);/* playful spring   */
 ```
 
@@ -427,6 +426,9 @@ Warm-up. Uses tokens and nesting only. Multiple variants. Introduces `color-mix(
 **Teaching point:** Native CSS nesting with `&` works just like Sass. `color-mix(in oklch, var(--color-primary) 12%, transparent)` creates a semi-transparent tint using the oklch color space.
 
 **Exercise:** Add a `badge--outline` variant that uses a transparent background with a colored border.
+- **Expected result:** A badge with no fill color, a 1px border in `var(--color-primary)`, and primary-colored text.
+- **Tokens to use:** `--border-thin`, `--color-primary` for border-color, `transparent` for background.
+- **Verify:** The outline badge should look like a hollow pill shape. Compare with the filled `badge--primary` variant.
 
 ### Component 2: Button (20 min)
 
@@ -517,8 +519,8 @@ Loading state with spinner:
       margin: auto;
       inline-size: 1em;
       block-size: 1em;
-      border: 2px solid currentColor;
-      border-color: var(--text-inverse) transparent var(--text-inverse) transparent;
+      border: 2px solid transparent;
+      border-block-color: var(--text-inverse);
       border-radius: var(--radius-full);
       animation: btn-spin 0.6s linear infinite;
     }
@@ -531,6 +533,9 @@ Loading state with spinner:
 ```
 
 **Exercise:** Add a `btn--danger` variant with `--color-error` as the background.
+- **Expected result:** A red button that darkens on hover.
+- **Tokens to use:** `--btn-bg: var(--color-error)`, `--btn-color: white`. For hover, use `color-mix(in oklch, var(--color-error) 80%, black)`.
+- **Verify:** The button should smoothly transition from red to dark red on hover (thanks to `@property`).
 
 ### Component 3: Avatar (10 min)
 
@@ -585,6 +590,8 @@ Introduces `aspect-ratio`, `object-fit: cover`, fallback initials via CSS. Three
 
 **Teaching point:** `calc(var(--avatar-size) * 0.4)` makes the font size and status dot proportional to the avatar size. Change one variable, everything scales.
 
+**Checkpoint:** Open `index.html` in your browser now. Create a simple HTML page that includes Badge, Button, and Avatar components. You should see styled badges with colored backgrounds, buttons with hover transitions (the color smoothly animates thanks to `@property`), and circular avatars with status indicators.
+
 ### Component 4: Alert (15 min)
 
 Introduces `:has()` in a simple context -- the alert grid changes when a dismiss button is present or absent.
@@ -621,6 +628,9 @@ Introduces `:has()` in a simple context -- the alert grid changes when a dismiss
 **Teaching point:** `:has()` is the parent selector CSS never had. `&:not(:has(.alert__dismiss))` means "an alert that does NOT contain a dismiss button." The parent's grid template changes based on child content, with no JavaScript.
 
 **Exercise:** Add a `.alert--banner` variant that spans full width with no border-radius.
+- **Expected result:** An alert that stretches edge-to-edge with squared corners, suitable for page-top notifications.
+- **Tokens to use:** `border-radius: 0`, `inline-size: 100%`.
+- **Verify:** Place it outside a max-width container to see it span the full viewport width.
 
 ### Component 5: Input Field (20 min)
 
@@ -737,6 +747,8 @@ Teaches `appearance: none`, `:checked` pseudo-class, custom checkbox styling.
 
 **Teaching point:** `appearance: none` strips the browser's default checkbox rendering. We then rebuild it entirely with CSS. The `--ease-bounce` curve gives the knob a satisfying spring feel.
 
+**Checkpoint:** Open your page in the browser. You should see alerts with colored left-accent backgrounds, form fields whose labels change color on focus, and toggle switches with a bouncing knob animation. Try typing an invalid email to see the `:has()` validation in action.
+
 ### Component 7: Card (20 min)
 
 Introduces container queries. The card adapts based on its OWN width, not the viewport width.
@@ -787,6 +799,10 @@ Introduces container queries. The card adapts based on its OWN width, not the vi
       block-size: 100%;
       grid-row: 1 / -1;
     }
+
+    & .card__footer {
+      grid-column: 2;
+    }
   }
 
   @container card (inline-size > 600px) {
@@ -805,7 +821,11 @@ Introduces container queries. The card adapts based on its OWN width, not the vi
 
 **Teaching point:** `container-type: inline-size` makes the card a container query target. `@container card (inline-size > 420px)` fires when the CARD (not the viewport) is wider than 420px. The same card markup renders vertically in a narrow column and horizontally in a wide one.
 
+Notice the `&` inside `@container`. When nesting a container query inside a ruleset, `&` refers to the parent selector (`.card` in this case). This is an interaction between two new features -- nesting and container queries.
+
 **Exercise:** Place the same card markup in containers of different widths and observe the layout changes.
+- **Expected result:** In a container narrower than 420px, the card shows vertically (image on top). In a container wider than 420px, it switches to horizontal (image on left). Above 600px, padding increases and the title grows.
+- **Verify:** Use browser DevTools to manually resize a wrapper `<div>` around the card. The layout should snap between vertical and horizontal without any viewport changes.
 
 ### Component 8: Skeleton Loader (10 min)
 
@@ -875,6 +895,17 @@ Teaches native `<dialog>`, `::backdrop`, `@starting-style` for entry animations,
   &[open]::backdrop {
     animation: backdrop-enter var(--duration-slow) var(--ease-out);
   }
+
+  /* @starting-style defines initial state when the element first renders */
+  @starting-style {
+    &[open] {
+      opacity: 0;
+      translate: 0 -1rem;
+    }
+    &[open]::backdrop {
+      background: oklch(0% 0 0 / 0%);
+    }
+  }
 }
 
 @keyframes dialog-enter {
@@ -892,7 +923,9 @@ Teaches native `<dialog>`, `::backdrop`, `@starting-style` for entry animations,
 
 **Teaching point:** The native `<dialog>` element provides focus trapping, Escape-to-close, and proper backdrop -- all for free. `dialog.showModal()` opens it as a modal. No JavaScript library needed for the core behavior.
 
-**Advanced:** `@scope` can be used for style encapsulation within the dialog, but regular nesting with `.dialog` class selectors achieves the same result more portably. `@scope` is best saved as an advanced topic.
+**Teaching point:** `@starting-style` defines the starting state of an element when it first renders. Without it, the browser has no "from" state for properties like `opacity` on an element that was not previously in the rendering tree. This complements the `@keyframes` approach and is especially useful for transitions (not just animations) on elements that appear dynamically.
+
+**Checkpoint:** Open your page in the browser. You should see cards that switch between vertical and horizontal layouts when their container is wider than 420px, skeleton loaders with a shimmer animation, and a dialog that smoothly fades in when opened. Resize the browser window to test the container queries.
 
 ### Component 10: Progress Bar (5 min)
 
@@ -1174,7 +1207,101 @@ The showcase uses additional layout-specific components defined at the end of `c
 - `.swatch-grid` / `.swatch` -- color palette display
 - `.hero` -- gradient title banner
 
-See the complete `solution/index.html` for the full markup.
+Here is a starter skeleton for your `index.html`. Fill in each section with component demos:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Showcase</title>
+  <link rel="stylesheet" href="main.css">
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('ds-theme');
+        if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        else if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="visually-hidden" style="position:absolute;top:-100%;left:0;padding:0.75rem 1.5rem;background:var(--color-primary);color:var(--text-inverse);z-index:1000;text-decoration:none;font-weight:600;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
+
+  <header class="showcase-header">
+    <div class="showcase-header__inner">
+      <span class="showcase-header__title">Design System</span>
+      <nav class="showcase-header__nav" aria-label="Component navigation">
+        <a href="#colors" class="showcase-header__link">Colors</a>
+        <a href="#typography" class="showcase-header__link">Typography</a>
+        <a href="#components" class="showcase-header__link">Components</a>
+        <a href="#dark-mode" class="showcase-header__link">Dark Mode</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+          <span class="theme-toggle__icon" aria-hidden="true"></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero">
+      <h1 class="hero__title">Modern CSS Design System</h1>
+      <p class="hero__subtitle">Your subtitle here.</p>
+    </section>
+
+    <hr class="divider">
+
+    <section id="colors" class="section">
+      <h2 class="section__title">Color Palette</h2>
+      <!-- Add swatch-grid with color swatches here -->
+    </section>
+
+    <section id="typography" class="section">
+      <h2 class="section__title">Typography Scale</h2>
+      <!-- Add type-sample demos here -->
+    </section>
+
+    <section id="components" class="section">
+      <h2 class="section__title">Components</h2>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Badges</h3>
+        <div class="component-demo">
+          <!-- Add badge demos here -->
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection__title">Buttons</h3>
+        <div class="component-demo">
+          <!-- Add button demos here -->
+        </div>
+      </div>
+
+      <!-- Add remaining component subsections:
+           Avatars, Alerts, Input Fields, Toggle Switch,
+           Cards, Skeleton Loader, Dialog, Progress Bar,
+           Tooltips, Dividers -->
+    </section>
+
+    <section id="dark-mode" class="section">
+      <h2 class="section__title">Dark Mode</h2>
+      <!-- Add dark mode demo here -->
+    </section>
+  </main>
+
+  <footer class="showcase-footer">
+    <p>Built with modern CSS.</p>
+  </footer>
+
+  <script src="theme.js"></script>
+</body>
+</html>
+```
+
+See the complete `solution/index.html` for the full markup with all component demos filled in.
 
 ---
 
@@ -1184,7 +1311,16 @@ See the complete `solution/index.html` for the full markup.
 
 Honest discussion of trade-offs:
 
-- **`@scope`**: Limited browser support history. Regular nesting with class selectors usually suffices for encapsulation. Use `@scope` when you genuinely need lower boundary containment.
+- **`@scope`**: An advanced feature for style encapsulation worth exploring on your own. It lets you define both an upper and lower boundary for where styles apply, preventing them from leaking into nested components. Example:
+
+```css
+@scope (.card) to (.card__nested) {
+  p { color: var(--text-secondary); }
+  h3 { font-weight: var(--weight-semibold); }
+}
+```
+
+Regular nesting with class selectors usually suffices for encapsulation, but `@scope` is valuable when you genuinely need lower boundary containment (e.g., preventing styles from leaking into slot content).
 - **`@property`**: Only register properties you actually need to animate. Over-registering adds overhead. Use it when you need the browser to interpolate a custom property value.
 - **`:has()`**: Avoid overly broad selectors like `body:has(.something)` -- they can trigger expensive style recalculations. Keep `:has()` scoped to the nearest relevant ancestor.
 - **`oklch()`**: Excellent for design-time palette generation. If you need exact hex color matching with an existing brand guide, convert the final oklch values to hex.

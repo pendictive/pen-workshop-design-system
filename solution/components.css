@@ -227,8 +227,8 @@
         margin: auto;
         inline-size: 1em;
         block-size: 1em;
-        border: 2px solid currentColor;
-        border-color: var(--text-inverse) transparent var(--text-inverse) transparent;
+        border: 2px solid transparent;
+        border-block-color: var(--text-inverse);
         border-radius: var(--radius-full);
         animation: btn-spin 0.6s linear infinite;
       }
@@ -633,10 +633,6 @@
     }
 
     /* --- :has() variant: card without an image --- */
-    &:has(.card__media) .card__inner {
-      /* Default grid, image present */
-    }
-
     &:not(:has(.card__media)) {
       & .card__body {
         padding-block-start: var(--space-6);
@@ -799,6 +795,18 @@
 
     &[open]::backdrop {
       animation: backdrop-enter var(--duration-slow) var(--ease-out);
+    }
+
+    /* @starting-style: defines the initial state when the dialog
+       first appears in the DOM, enabling smooth entry transitions */
+    @starting-style {
+      &[open] {
+        opacity: 0;
+        translate: 0 -1rem;
+      }
+      &[open]::backdrop {
+        background: oklch(0% 0 0 / 0%);
+      }
     }
 
     & .dialog__header {
@@ -1282,5 +1290,18 @@
     border-block-start: var(--border-thin) solid var(--border-default);
     color: var(--text-muted);
     font-size: var(--text-sm);
+  }
+
+  /* ==========================================================
+     REDUCED MOTION -- disable component-level animations
+     (Duration tokens are already zeroed in tokens.css, but
+     these hardcoded animations need explicit overrides.)
+     ========================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton::after { animation: none; }
+    .btn--loading::after { animation: none; }
+    .dialog[open] { animation: none; }
+    .dialog[open]::backdrop { animation: none; }
+    .progress--indeterminate .progress__fill { animation: none; }
   }
 }

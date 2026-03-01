@@ -6,7 +6,6 @@
 
    tokens   (lowest)  -- raw design values
    reset               -- browser defaults normalization
-   base                -- base element styles
    components          -- all component styles
    utilities (highest) -- one-off overrides, always win
 
@@ -14,7 +13,7 @@
    styles. Never write styles outside a layer in this system.
    ============================================================ */
 
-@layer tokens, reset, base, components, utilities;
+@layer tokens, reset, components, utilities;
 
 @import url("tokens.css");
 @import url("reset.css");
