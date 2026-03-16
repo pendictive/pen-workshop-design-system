@@ -17,12 +17,6 @@
   inherits: false;
 }
 
-@property --toggle-pos {
-  syntax: "<length>";
-  initial-value: 2px;
-  inherits: false;
-}
-
 @layer tokens {
   :root {
     /* ==========================================================
@@ -118,7 +112,6 @@
     --tracking-normal: 0em;
     --tracking-wide:   0.025em;
     --tracking-wider:  0.05em;
-    /* Additional tokens available for extension: --leading-none, --leading-loose, --tracking-normal */
 
     /* ==========================================================
        SPACING -- consistent 4px-based scale
@@ -166,7 +159,6 @@
     --shadow-xl:  0 20px 25px oklch(0% 0 0 / 10%), 0 8px 10px oklch(0% 0 0 / 5%);
     --shadow-2xl: 0 25px 50px oklch(0% 0 0 / 18%);
     --shadow-inner: inset 0 2px 4px oklch(0% 0 0 / 5%);
-    /* Additional tokens available for extension: --shadow-inner */
 
     /* ==========================================================
        Z-INDEX SCALE
